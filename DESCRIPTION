@@ -1,0 +1,10 @@
+Package: Triples
+Title: Test your phylogeny
+Version: 1.0
+Author: Ambuj Kumar
+Maintainer: Ambuj Kumar <ambuj@ufl.edu>
+Description: Calculates resolution of triples from the set of phylogeny trees
+Depends: ape (>= 2.0)
+License: GPL (>= 2)
+URL: https://github.com/Ambuj-UF/Triples
+Packaged: 2014-10-29 04:55:33 UTC; ambuj

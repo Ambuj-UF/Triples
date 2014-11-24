@@ -1,0 +1,10 @@
+Homo_Sapiens
+Callithrix_jacchus
+Pan_troglodytes
+Pan_paniscus
+Papio_anubis
+Condylura_cristata
+Spermophilus_tridecemlineatus
+Odobenus_rosmarus
+Tursiops_truncatus
+Colobus_guereza
