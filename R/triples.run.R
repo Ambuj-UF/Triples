@@ -39,25 +39,16 @@ extriples <- function (phy, authTaxa, outgroup) {
 }
 
 
-triples <- function (inpFile = "", authorityFile = "", outgroup = "", output="Triples.txt") {
+triples <- function (input = "", auth = "", outgroup = "", output="Triples.txt") {
     
-    if (inpFile == "") {
-        cat("Require input tree file for execution")
-        quit(save = "default", status = 0, runLast = FALSE)
-    }
-    if (authorityFile == "") {
-        cat("Require authority file for execution")
-        quit(save = "default", status = 0, runLast = FALSE)
-    }
-    if (outgroup == "") {
-        cat("Require outgroup for execution")
-        quit(save = "default", status = 0, runLast = FALSE)
-    }
+    stopifnot(input != "")
+    stopifnot(auth != "")
+    stopifnot(outgroup != "")
     
     out="td"
     options(warn=-1)
-    inData = read.tree(inpFile)
-    authTaxa = read.table(file=authorityFile,header=FALSE,sep="\n")
+    inData = read.tree(input)
+    authTaxa = read.table(file=auth,header=FALSE,sep="\n")
     taxaIncPre=c()
 
     for (i in 1:length(authTaxa$V1)) {
