@@ -77,9 +77,12 @@ triples <- function (input = "", auth = "", outgroup = "", output="Triples.txt")
             }
         }
     }
+    
+    cat(paste('\n', "Creating Triples resolution", '\n', sep=""))
 
     sink(output)
 
+    store_best = c()
     for (i in 1:length(taxaInc[1,])) {
         if (!i %in% store_i) {
             t1 = read.tree(text=paste('(', outgroup, ',', '(', '(', taxaInc[,i][1], ',', taxaInc[,i][2], ')', ',', taxaInc[,i][3], ')', ')', ';', sep=""))
@@ -109,12 +112,30 @@ triples <- function (input = "", auth = "", outgroup = "", output="Triples.txt")
 
 
             if (out == "td") {
-                cat(c(paste(paste('(', outgroup, ',', '(', '(', taxaInc[,i][1], ',', taxaInc[,i][2], ')', ',', taxaInc[,i][3], ')', ')', ';', sep=""),
-                paste('(', outgroup, ',', '(', '(', taxaInc[,i][1], ',', taxaInc[,i][3], ')', ',', taxaInc[,i][2], ')', ')', ';', sep=""),
-                paste('(', outgroup, ',', '(', '(', taxaInc[,i][2], ',', taxaInc[,i][3], ')', ',', taxaInc[,i][1], ')', ')', ';', sep=""),
-                paste('(', outgroup, ',', '(', taxaInc[,i][1], ',', taxaInc[,i][2], ',', taxaInc[,i][3], ')', ')', ';', sep=""), sep="\t"), "\n"))
-                cat(c(paste(count1, count2, count3, count4, sep="\t")), "\n")
-                cat("\n\n")
+                x1 = paste('(', outgroup, ',', '(', '(', taxaInc[,i][1], ',', taxaInc[,i][2], ')', ',', taxaInc[,i][3], ')', ')', ';', sep="")
+                x2 = paste('(', outgroup, ',', '(', '(', taxaInc[,i][1], ',', taxaInc[,i][3], ')', ',', taxaInc[,i][2], ')', ')', ';', sep="")
+                x3 = paste('(', outgroup, ',', '(', '(', taxaInc[,i][2], ',', taxaInc[,i][3], ')', ',', taxaInc[,i][1], ')', ')', ';', sep="")
+                x4 = paste('(', outgroup, ',', '(', taxaInc[,i][1], ',', taxaInc[,i][2], ',', taxaInc[,i][3], ')', ')', ';', sep="")
+                cat(c(paste(x1, x2, x3, x4, count1, count2, count3, count4, sep ="\t"), "\n"))
+                
+                allCounts = c(count1, count2, count3)
+                if (which.max(allCounts) == 1) {
+                    store_best = c(store_best, x1)
+                }
+                else if (which.max(allCounts) == 2) {
+                    store_best = c(store_best, x2)
+                }
+                else if (which.max(allCounts) == 3) {
+                    store_best = c(store_best, x3)
+                }
+                
+                #cat(c(paste(paste('(', outgroup, ',', '(', '(', taxaInc[,i][1], ',', taxaInc[,i][2], ')', ',', taxaInc[,i][3], ')', ')', ';', sep=""),
+                #paste('(', outgroup, ',', '(', '(', taxaInc[,i][1], ',', taxaInc[,i][3], ')', ',', taxaInc[,i][2], ')', ')', ';', sep=""),
+                #paste('(', outgroup, ',', '(', '(', taxaInc[,i][2], ',', taxaInc[,i][3], ')', ',', taxaInc[,i][1], ')', ')', ';', sep=""),
+                #paste('(', outgroup, ',', '(', taxaInc[,i][1], ',', taxaInc[,i][2], ',', taxaInc[,i][3], ')', ')', ';', sep=""), sep="\t"), "\n"))
+                #cat(c(paste(count1, count2, count3, count4, sep="\t")), "\n")
+                
+                cat("\n")
             }
             
             else {
@@ -129,6 +150,19 @@ triples <- function (input = "", auth = "", outgroup = "", output="Triples.txt")
     }
 
     sink()
+    
+    cat(c(paste("Storing best resolution triple in", paste(strsplit(output, '[.]')[[1]][1], "_best.txt file", '\n', sep = ""), sep=" ")))
+    
+    sink(paste(strsplit(output, '[.]')[[1]][1], "_best.txt", sep = ""))
+    
+    for (data in store_best) {
+        cat(c(paste(data, '\n')))
+    }
+    
+    sink()
+    
+    cat(paste("All done. Have a nice day!", '\n'))
+    
 }
 
 
